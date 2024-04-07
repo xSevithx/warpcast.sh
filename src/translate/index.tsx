@@ -9,6 +9,7 @@ import { NEYNAR_API_KEY } from '../../env/server-env';
 import { Logger } from '../../utils/Logger';
 import { cast } from '../services/neynar-service';
 import { translate } from './openai';
+import { truncateString } from '../../utils/strings';
 
 const client = new NeynarAPIClient(NEYNAR_API_KEY);
 export const app = new Frog();
@@ -78,7 +79,10 @@ app.hono.post('/cast', async (c) => {
 
     await cast(
       // `@${clickedUsername} mfered @${castorUsername} 0-'`,
-      `@${clickedUsername} here is the translation:\n\n${translation}\n`,
+      truncateString(
+        `@${clickedUsername} here is the translation:\n\n${translation}\n`,
+        320,
+      ),
       embed,
       hash,
     );
