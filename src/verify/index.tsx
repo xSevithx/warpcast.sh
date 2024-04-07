@@ -180,7 +180,9 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
         <Button.Link href={addActionLink}>Add action</Button.Link>,
       ],
     });
-  } catch (error) {
+  } catch (error: any) {
+    Logger.error(error);
+    Logger.error(error?.stack);
     return c.res({
       image: HandledErrorComponent({ error }),
       intents: [<Button action="/customize">Back</Button>],
