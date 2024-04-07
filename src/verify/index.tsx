@@ -2,17 +2,17 @@
 import { NeynarAPIClient } from '@neynar/nodejs-sdk';
 import { Button, Frog, TextInput } from 'frog';
 import { CHAIN_MAP, SdkSupportedChainIds } from 'mint.club-v2-sdk';
-import { length, object, parse, startsWith, string } from 'valibot';
+import queryString from 'query-string';
+import { length, parse, startsWith, string } from 'valibot';
+import { isAddress } from 'viem';
 import { NEYNAR_API_KEY } from '../../env/server-env';
+import { Logger } from '../../utils/Logger';
 import { getViemChain } from '../../utils/chain';
+import { getOrigin } from '../../utils/url';
 import { HandledErrorComponent } from '../components/error';
 import { colors } from '../constants/colors';
 import { ValidationError } from '../constants/types';
-import { getBalance, getTokenSymbol } from './verify-utils';
-import { isAddress } from 'viem';
-import { getOrigin } from '../../utils/url';
-import { Logger } from '../../utils/Logger';
-import queryString from 'query-string';
+import { getBalance, getTokenInfo, isERC721 } from './verify-utils';
 
 export const app = new Frog<{
   State: {
@@ -44,7 +44,7 @@ app.frame('/customize', async (c) => {
             color: colors.warpcast,
           }}
         >
-          chainId,tokenAddress
+          chainId,tokenAddress,tokenId(optional for erc1155)
         </div>
         <div
           tw="mt-20 flex flex-col items-center text-center text-3xl text-gray-500"
@@ -53,7 +53,7 @@ app.frame('/customize', async (c) => {
           }}
         >
           <div>example</div>
-          <div tw="mt-5">8453,0x1234...6789</div>
+          <div tw="mt-5">8453,0x1234...6789,0(optional)</div>
         </div>
       </div>
     ),
@@ -70,6 +70,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
   const split = inputText?.split(',') || [];
   let chainId = c.req.param('chainId');
   let address = c.req.param('contractAddress');
+  const tokenId = split[2]?.trim();
 
   if (chainId === '-1' && address === '-1' && !!inputText) {
     chainId = split[0]?.trim();
@@ -97,7 +98,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
     }
 
     const { name, icon, color } = CHAIN_MAP[chain.id as SdkSupportedChainIds];
-    const tokenSymbol = await getTokenSymbol({
+    const { tokenSymbol, decimals } = await getTokenInfo({
       chainId: Number(chainId),
       contractAddress,
     });
@@ -106,12 +107,29 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       throw new ValidationError('Token not found');
     }
 
-    const qs = queryString.stringify({
-      actionType: 'post',
-      name: `Check $${tokenSymbol}`,
-      icon: 'search',
-      postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}`,
-    });
+    if (decimals === 0) {
+      const erc721 = await isERC721({
+        chainId: Number(chainId),
+        contractAddress,
+      });
+
+      if (!erc721 && !tokenId) {
+        throw new ValidationError('Token Id is required for ERC1155');
+      }
+    }
+
+    const qs = queryString.stringify(
+      {
+        actionType: 'post',
+        name: `Check $${tokenSymbol}`,
+        icon: 'search',
+        postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}${tokenId ? `/${tokenId}` : ''}`,
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    );
     const addActionLink = `https://warpcast.com/~/add-cast-action?${qs}`;
 
     return c.res({
@@ -157,7 +175,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
   }
 });
 
-app.hono.post('/check/:chainId/:contractAddress', async (c) => {
+app.hono.post('/check/:chainId/:contractAddress/:tokenId?', async (c) => {
   const body = await c.req.json();
 
   if (!body?.trustedData?.messageBytes) {
@@ -183,10 +201,25 @@ app.hono.post('/check/:chainId/:contractAddress', async (c) => {
     });
   }
 
+  const chainId = c.req.param('chainId');
+  const contractAddress = c.req.param('contractAddress');
+  if (!chainId) {
+    return c.json({
+      status: 400,
+      message: `Invalid chainId or contractAddress`,
+    });
+  } else if (!contractAddress || !isAddress(contractAddress)) {
+    return c.json({
+      status: 400,
+      message: `Invalid contractAddress`,
+    });
+  }
+
   const { balance, symbol } = await getBalance({
     addresses: verified_addresses.eth_addresses.concat(custody_address),
-    chainId: Number(c.req.param('chainId')),
-    contractAddress: c.req.param('contractAddress'),
+    chainId: Number(chainId),
+    contractAddress: contractAddress,
+    tokenId: c.req.param('tokenId'),
   });
 
   return c.json({
