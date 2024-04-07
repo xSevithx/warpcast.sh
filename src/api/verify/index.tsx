@@ -12,6 +12,7 @@ import { getBalance, getTokenSymbol } from './verify-utils';
 import { isAddress } from 'viem';
 import { getOrigin } from '../../../utils/url';
 import { Logger } from '../../../utils/Logger';
+import queryString from 'query-string';
 
 export const app = new Frog<{
   State: {
@@ -105,6 +106,14 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       throw new ValidationError('Token not found');
     }
 
+    const qs = queryString.stringify({
+      actionType: 'post',
+      name: `Check ${tokenSymbol}`,
+      icon: 'shield-check',
+      postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}`,
+    });
+    const addActionLink = `https://warpcast.com/~/add-cast-action?${qs}`;
+
     return c.res({
       title: 'Warpcast.sh',
       image: (
@@ -137,13 +146,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       ),
       intents: [
         <Button action="/customize">Customize</Button>,
-        <Button.Link
-          href={encodeURIComponent(
-            `https://warpcast.com/~/add-cast-action?actionType=post&name=${'Verify ' + tokenSymbol}&icon=shield-check&postUrl=https%3A%2F%2Fwarpcast.sh%2Fapi%2Fverify%2Fcheck%2F${chain.id}%2F${contractAddress}`,
-          )}
-        >
-          Add action
-        </Button.Link>,
+        <Button.Link href={addActionLink}>Add action</Button.Link>,
       ],
     });
   } catch (error) {
