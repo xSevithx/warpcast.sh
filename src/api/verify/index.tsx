@@ -9,6 +9,7 @@ import { HandledErrorComponent } from '../../components/error';
 import { colors } from '../../constants/colors';
 import { ValidationError } from '../../constants/types';
 import { getBalance, getTokenSymbol } from './verify-utils';
+import { isAddress } from 'viem';
 
 export const app = new Frog<{
   State: {
@@ -29,7 +30,7 @@ const client = new NeynarAPIClient(NEYNAR_API_KEY);
 app.frame('/customize', async (c) => {
   return c.res({
     title: 'Warpcast.sh',
-    action: '/create/0/0',
+    action: '/create/-1/-1',
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-10 text-5xl text-white">
         <div tw="flex text-7xl">Enter token information</div>
@@ -63,9 +64,13 @@ app.frame('/customize', async (c) => {
 app.frame('/create/:chainId/:contractAddress', async (c) => {
   const { inputText } = c;
   const split = inputText?.split(',') || [];
-  const chainId = split[0]?.trim() ?? c.req.param('chainId');
-  const address = split[1]?.trim() ?? c.req.param('contractAddress');
-  console.log(chainId, address);
+  let chainId = c.req.param('chainId');
+  let address = c.req.param('contractAddress');
+
+  if ((chainId === '-1' || address === '-1') && inputText) {
+    chainId = split[0]?.trim();
+    address = split[1]?.trim();
+  }
 
   try {
     const contractAddress = parse(
@@ -76,7 +81,16 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       address,
     );
 
+    if (!isAddress(address) === false) {
+      throw new ValidationError('Invalid token address');
+    }
+
     const chain = getViemChain(Number(chainId));
+
+    if (!chain) {
+      throw new ValidationError('Invalid chain id');
+    }
+
     const { name, icon, color } = CHAIN_MAP[chain.id as SdkSupportedChainIds];
     const tokenSymbol = await getTokenSymbol({
       chainId: Number(chainId),
