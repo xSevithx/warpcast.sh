@@ -22,6 +22,9 @@ export async function translate(text: string) {
       model: 'gpt-3.5-turbo',
       response_format: { type: 'json_object' },
     });
+
+    console.log(completion.choices[0].message.content);
+
     const translated = JSON.parse(
       completion.choices[0].message.content as any,
     )?.translated;
