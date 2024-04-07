@@ -19,7 +19,7 @@ export async function translate(text: string) {
           content: `What did this person say? return a JSON object with a single "translated" key.\n\ntext: ${text}`,
         },
       ],
-      model: 'gpt-4-turbo-preview',
+      model: 'gpt-3.5-turbo',
       response_format: { type: 'json_object' },
     });
     const translated = JSON.parse(
@@ -30,9 +30,14 @@ export async function translate(text: string) {
       throw new Error('Failed to translate');
     }
 
+    console.log(translated);
     return translated;
   } catch (e: any) {
     Logger.error(e);
     Logger.error(e?.stack);
   }
 }
+
+// translate(`
+// こちらのFramesにgithubのプロフィールURLを入力するだけでPicnicPlan（$20/mo）が50%OFFになるPromoCodeが貰えます。
+// `);
