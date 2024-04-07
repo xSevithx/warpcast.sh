@@ -106,6 +106,9 @@ app.frame('/actions', async (c) => {
       <Button action="/verify/customize">Verify</Button>,
       <Button action="/translate">Translate</Button>,
     ],
+    headers: {
+      'cache-control': 'no-store, max-age=0',
+    },
   });
 });
 
