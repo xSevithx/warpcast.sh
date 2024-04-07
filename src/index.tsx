@@ -37,6 +37,10 @@ export const app = new Frog({
         name: 'Bebas Neue',
         source: 'google',
       },
+      {
+        name: 'Roboto',
+        source: 'google',
+      },
     ],
   },
   // Supply a Hub to enable frame verification.

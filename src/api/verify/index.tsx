@@ -29,21 +29,26 @@ const client = new NeynarAPIClient(NEYNAR_API_KEY);
 app.frame('/customize', async (c) => {
   return c.res({
     title: 'Warpcast.sh',
-    action: '/create',
+    action: '/create/0/0',
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-10 text-5xl text-white">
         <div tw="flex text-7xl">Enter token information</div>
         <div
           tw="mt-20 flex items-center text-center"
           style={{
-            color: colors.twitter,
+            color: colors.warpcast,
           }}
         >
           chainId,tokenAddress
         </div>
-        <div tw="mt-20 flex flex-col items-center text-center text-gray-500">
-          <div tw="text-4xl">example</div>
-          <div tw="mt-2">8453,0x1234...</div>
+        <div
+          tw="mt-20 flex flex-col items-center text-center text-3xl text-gray-500"
+          style={{
+            fontFamily: 'Roboto',
+          }}
+        >
+          <div>example</div>
+          <div tw="mt-5">8453,0x1234...6789</div>
         </div>
       </div>
     ),
@@ -55,23 +60,20 @@ app.frame('/customize', async (c) => {
   });
 });
 
-app.frame('/create/:chainId?/:contractAddress?', async (c) => {
+app.frame('/create/:chainId/:contractAddress', async (c) => {
   const { inputText } = c;
   const split = inputText?.split(',') || [];
-  const chainId = c.req.param('chainId') || split[0]?.trim();
-  const address = c.req.param('contractAddress') || split[1]?.trim();
+  const chainId = split[0]?.trim() ?? c.req.param('chainId');
+  const address = split[1]?.trim() ?? c.req.param('contractAddress');
+  console.log(chainId, address);
 
   try {
-    const { contractAddress } = parse(
-      object({
-        contractAddress: string([
-          length(42, 'Base token address should be 42 characters long'),
-          startsWith('0x', 'Base token address should start with 0x'),
-        ]),
-      }),
-      {
-        contractAddress: address,
-      },
+    const contractAddress = parse(
+      string([
+        length(42, 'Base token address should be 42 characters long'),
+        startsWith('0x', 'Base token address should start with 0x'),
+      ]),
+      address,
     );
 
     const chain = getViemChain(Number(chainId));
