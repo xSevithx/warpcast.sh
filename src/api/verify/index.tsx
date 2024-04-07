@@ -26,46 +26,9 @@ export const app = new Frog<{
 
 const client = new NeynarAPIClient(NEYNAR_API_KEY);
 
-app.hono.get('/check/:chainId/:contractAddress', async (c) => {
-  const body = await c.req.json();
-
-  if (!body?.trustedData?.messageBytes) {
-    return c.json({
-      status: 400,
-      message: 'Invalid Frame Action',
-    });
-  }
-
-  const {
-    valid,
-    action: {
-      cast: {
-        author: { username, custody_address, verified_addresses },
-      },
-    },
-  } = await client.validateFrameAction(body.trustedData.messageBytes);
-
-  if (!valid) {
-    return c.json({
-      status: 400,
-      message: `Invalid frame action`,
-    });
-  }
-
-  const { balance, symbol } = await getBalance({
-    addresses: verified_addresses.eth_addresses.concat(custody_address),
-    chainId: Number(c.req.param('chainId')),
-    contractAddress: c.req.param('contractAddress'),
-  });
-
-  return c.json({
-    status: 200,
-    message: `@${username} - ${balance} ${symbol}`,
-  });
-});
-
 app.frame('/customize', async (c) => {
   return c.res({
+    title: 'Warpcast.sh',
     action: '/create',
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-10 text-5xl text-white">
@@ -123,6 +86,7 @@ app.frame('/create/:chainId?/:contractAddress?', async (c) => {
     }
 
     return c.res({
+      title: 'Warpcast.sh',
       image: (
         <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-10 text-5xl text-white">
           <div tw="flex">This action will check the user's balance of</div>
@@ -168,4 +132,42 @@ app.frame('/create/:chainId?/:contractAddress?', async (c) => {
       intents: [<Button action="/customize">Back</Button>],
     });
   }
+});
+
+app.hono.get('/check/:chainId/:contractAddress', async (c) => {
+  const body = await c.req.json();
+
+  if (!body?.trustedData?.messageBytes) {
+    return c.json({
+      status: 400,
+      message: 'Invalid Frame Action',
+    });
+  }
+
+  const {
+    valid,
+    action: {
+      cast: {
+        author: { username, custody_address, verified_addresses },
+      },
+    },
+  } = await client.validateFrameAction(body.trustedData.messageBytes);
+
+  if (!valid) {
+    return c.json({
+      status: 400,
+      message: `Invalid frame action`,
+    });
+  }
+
+  const { balance, symbol } = await getBalance({
+    addresses: verified_addresses.eth_addresses.concat(custody_address),
+    chainId: Number(c.req.param('chainId')),
+    contractAddress: c.req.param('contractAddress'),
+  });
+
+  return c.json({
+    status: 200,
+    message: `@${username} - ${balance} ${symbol}`,
+  });
 });
