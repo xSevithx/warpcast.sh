@@ -106,6 +106,13 @@ app.frame('/', async (c) => {
   );
   const addActionLink = `https://warpcast.com/~/add-cast-action?${qs}`;
 
+  const shareQs = queryString.stringify({
+    text: `Translate Action @warpcastbot`,
+    'embeds[]': `https://warpcast.sh/translate`,
+  });
+
+  const warpcastShareLink = `https://warpcast.com/~/compose?${shareQs}`;
+
   return c.res({
     title: 'Warpcast.sh',
     image: (
@@ -131,6 +138,7 @@ app.frame('/', async (c) => {
       <Button.Link href={`https://warpcast.com/undefined`}>
         @undefined
       </Button.Link>,
+      <Button.Link href={warpcastShareLink}>Share</Button.Link>,
       <Button.Link href={addActionLink}>Add translate action</Button.Link>,
     ],
   });
