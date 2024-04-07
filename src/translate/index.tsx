@@ -66,7 +66,7 @@ app.hono.post('/cast', async (c) => {
     //   }
     // }
 
-    const embed = `${getOrigin()}/translate/frame`;
+    const embed = `${getOrigin()}/translate`;
     Logger.info(
       `@${clickedUsername} used translate action on @${castorUsername}`,
     );
@@ -74,7 +74,7 @@ app.hono.post('/cast', async (c) => {
 
     await cast(
       // `@${clickedUsername} mfered @${castorUsername} 0-'`,
-      `@${castorUsername} here is the translation:\n\n${translation}`,
+      `@${clickedUsername} here is the translation:\n\n${translation}\n`,
       embed,
       hash,
     );
