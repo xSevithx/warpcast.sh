@@ -71,6 +71,9 @@ app.hono.post('/cast', async (c) => {
       `@${clickedUsername} used translate action on @${castorUsername}`,
     );
     const translation = await translate(text);
+    if (!translation || typeof translation !== 'string') {
+      throw new Error('Translation failed');
+    }
 
     await cast(
       // `@${clickedUsername} mfered @${castorUsername} 0-'`,
