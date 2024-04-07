@@ -6,8 +6,8 @@ import {
   toNumber,
 } from 'mint.club-v2-sdk';
 import { createPublicClient, erc20Abi, http } from 'viem';
-import { NEYNAR_API_KEY } from '../../../env/server-env';
-import { getViemChain } from '../../../utils/chain';
+import { NEYNAR_API_KEY } from '../../env/server-env';
+import { getViemChain } from '../../utils/chain';
 
 const client = new NeynarAPIClient(NEYNAR_API_KEY);
 

@@ -6,7 +6,7 @@ import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
-import { app as verify } from './api/verify';
+import { app as verify } from './verify';
 import { getOrigin } from '../utils/url';
 dotenv.config();
 

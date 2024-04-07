@@ -3,15 +3,15 @@ import { NeynarAPIClient } from '@neynar/nodejs-sdk';
 import { Button, Frog, TextInput } from 'frog';
 import { CHAIN_MAP, SdkSupportedChainIds } from 'mint.club-v2-sdk';
 import { length, object, parse, startsWith, string } from 'valibot';
-import { NEYNAR_API_KEY } from '../../../env/server-env';
-import { getViemChain } from '../../../utils/chain';
-import { HandledErrorComponent } from '../../components/error';
-import { colors } from '../../constants/colors';
-import { ValidationError } from '../../constants/types';
+import { NEYNAR_API_KEY } from '../../env/server-env';
+import { getViemChain } from '../../utils/chain';
+import { HandledErrorComponent } from '../components/error';
+import { colors } from '../constants/colors';
+import { ValidationError } from '../constants/types';
 import { getBalance, getTokenSymbol } from './verify-utils';
 import { isAddress } from 'viem';
-import { getOrigin } from '../../../utils/url';
-import { Logger } from '../../../utils/Logger';
+import { getOrigin } from '../../utils/url';
+import { Logger } from '../../utils/Logger';
 import queryString from 'query-string';
 
 export const app = new Frog<{
@@ -157,15 +157,14 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
   }
 });
 
-app.hono.get('/check/:chainId/:contractAddress', async (c) => {
+app.hono.post('/check/:chainId/:contractAddress', async (c) => {
   const body = await c.req.json();
 
   if (!body?.trustedData?.messageBytes) {
-    c.json({
+    return c.json({
       status: 400,
       message: 'Invalid Frame Action',
     });
-    return;
   }
 
   const {
@@ -190,7 +189,7 @@ app.hono.get('/check/:chainId/:contractAddress', async (c) => {
     contractAddress: c.req.param('contractAddress'),
   });
 
-  c.json({
+  return c.json({
     status: 200,
     message: `@${username} - ${balance} ${symbol}`,
   });
