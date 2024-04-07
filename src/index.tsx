@@ -9,6 +9,7 @@ import { app as verify } from './verify';
 import { app as translate } from './translate';
 import { app as landing } from './landing';
 import { getOrigin } from '../utils/url';
+import { SECRET } from '../env/server-env';
 dotenv.config();
 
 declare global {
@@ -27,6 +28,7 @@ export const app = new Frog({
   assetsPath: '/',
   basePath: '/',
   origin,
+  secret: SECRET,
 });
 
 app.use(async (c, next) => {
