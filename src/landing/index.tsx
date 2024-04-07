@@ -114,7 +114,7 @@ app.frame('/frames', async (c) => {
     title: 'Warpcast.sh',
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black text-3xl text-white">
-        <div tw="text-5xl">Actions</div>
+        <div tw="text-5xl">Frames</div>
         <div
           tw="mt-10 flex flex-col"
           style={{
