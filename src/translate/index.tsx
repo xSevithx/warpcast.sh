@@ -97,7 +97,7 @@ app.frame('/', async (c) => {
       actionType: 'post',
       name: 'translate',
       icon: 'typography',
-      postUrl: `${getOrigin()}/translate`,
+      postUrl: `${getOrigin()}/translate/cast`,
     },
     {
       skipEmptyString: true,
