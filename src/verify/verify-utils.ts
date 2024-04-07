@@ -54,6 +54,7 @@ export async function getBalance(params: {
   tokenId?: string;
 }) {
   const { addresses, chainId, tokenId, contractAddress } = params;
+  console.log(params);
 
   let total = 0n;
 
