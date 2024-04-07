@@ -1,0 +1,33 @@
+{
+  "name": "frames-bun-boilerplate",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "frog dev",
+    "serve": "NODE_ENV=production bun run src/index.tsx",
+    "build": "bun run bundle.js",
+    "watch": "bun --hot src/index.tsx",
+    "proxy": "NODE_ENV=production PROXY=true bun --hot src/index.tsx"
+  },
+  "trustedDependencies": [
+    "frog"
+  ],
+  "dependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "dotenv": "^16.4.5",
+    "frog": "^0.8.0",
+    "hono": "^4",
+    "lodash-es": "^4.17.21",
+    "pinata-fdk": "^3.6.1",
+    "sharp": "^0.33.3",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun": "latest",
+    "cloudflared": "^0.5.1",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.13"
+  },
+  "version": "0.0.17"
+}
