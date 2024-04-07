@@ -7,6 +7,7 @@ import { serveStatic } from 'frog/serve-static';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
 import { app as verify } from './api/verify';
+import { getOrigin } from '../utils/url';
 dotenv.config();
 
 declare global {
@@ -18,13 +19,7 @@ if (process.env.PROXY === 'true' && !globalThis.cloudflared) {
   globalThis.cloudflared = cloudflared;
 }
 
-const origin =
-  process.env.PROXY && globalThis.cloudflared !== undefined
-    ? globalThis.cloudflared
-    : process.env.NODE_ENV !== 'production'
-      ? `http://localhost:${process.env.PORT}`
-      : 'https://warpcast.sh';
-
+const origin = getOrigin();
 console.log({ origin });
 
 export const app = new Frog({

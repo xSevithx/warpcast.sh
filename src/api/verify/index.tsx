@@ -10,6 +10,7 @@ import { colors } from '../../constants/colors';
 import { ValidationError } from '../../constants/types';
 import { getBalance, getTokenSymbol } from './verify-utils';
 import { isAddress } from 'viem';
+import { getOrigin } from '../../../utils/url';
 
 export const app = new Frog<{
   State: {
@@ -18,6 +19,7 @@ export const app = new Frog<{
     contractAddress: string;
   };
 }>({
+  origin: getOrigin(),
   initialState: {
     type: '',
     chainId: '',
