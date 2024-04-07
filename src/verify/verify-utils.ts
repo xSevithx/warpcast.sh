@@ -26,26 +26,26 @@ export async function getTokenInfo(params: {
     })
     .catch(() => 0);
 
-  let tokenSymbol = await publicClient
-    .readContract({
-      abi: erc20Abi,
-      address: contractAddress as `0x${string}`,
-      functionName: 'symbol',
-    })
-    .catch(async () => {
-      const name = await publicClient.readContract({
-        abi: ERC1155_ABI,
-        address: contractAddress as `0x${string}`,
-        functionName: 'name',
-      });
+  let tokenSymbol = await publicClient.readContract({
+    abi: erc20Abi,
+    address: contractAddress as `0x${string}`,
+    functionName: 'symbol',
+  });
 
-      // make acronym
-      return name
-        .split(' ')
-        .map((word) => word[0])
-        .join('')
-        .toUpperCase();
+  if (!tokenSymbol) {
+    const name = await publicClient.readContract({
+      abi: ERC1155_ABI,
+      address: contractAddress as `0x${string}`,
+      functionName: 'name',
     });
+
+    // make acronym
+    tokenSymbol = name
+      .split(' ')
+      .map((word) => word[0])
+      .join('')
+      .toUpperCase();
+  }
 
   return { decimals, tokenSymbol };
 }
@@ -74,28 +74,26 @@ export async function getBalance(params: {
     })
     .catch(() => 0);
 
-  const symbol = await publicClient
-    .readContract({
-      abi: erc20Abi,
-      address: contractAddress as `0x${string}`,
-      functionName: 'symbol',
-    })
-    .catch(async () => {
-      const name = await publicClient.readContract({
-        abi: ERC1155_ABI,
-        address: contractAddress as `0x${string}`,
-        functionName: 'name',
-      });
+  let symbol = await publicClient.readContract({
+    abi: erc20Abi,
+    address: contractAddress as `0x${string}`,
+    functionName: 'symbol',
+  });
 
-      // make acronym
-      return name
-        .split(' ')
-        .map((word) => word[0])
-        .join('')
-        .toUpperCase();
+  if (!symbol) {
+    const name = await publicClient.readContract({
+      abi: ERC1155_ABI,
+      address: contractAddress as `0x${string}`,
+      functionName: 'name',
     });
 
-  console.log(params, symbol, decimals);
+    // make acronym
+    symbol = name
+      .split(' ')
+      .map((word) => word[0])
+      .join('')
+      .toUpperCase();
+  }
 
   for (const address of addresses) {
     if (tokenId !== undefined) {
