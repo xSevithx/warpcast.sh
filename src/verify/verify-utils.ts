@@ -1,4 +1,3 @@
-import { NeynarAPIClient } from '@neynar/nodejs-sdk';
 import {
   ERC1155_ABI,
   commify,
@@ -6,10 +5,7 @@ import {
   toNumber,
 } from 'mint.club-v2-sdk';
 import { createPublicClient, erc20Abi, erc721Abi, http } from 'viem';
-import { NEYNAR_API_KEY } from '../../env/server-env';
 import { getViemChain } from '../../utils/chain';
-
-const client = new NeynarAPIClient(NEYNAR_API_KEY);
 
 export async function getTokenInfo(params: {
   chainId: number;
@@ -61,7 +57,6 @@ export async function getBalance(params: {
   tokenId?: string;
 }) {
   const { addresses, chainId, tokenId, contractAddress } = params;
-  console.log(params);
 
   let total = 0n;
 
@@ -100,23 +95,16 @@ export async function getBalance(params: {
         .toUpperCase();
     });
 
+  console.log(params, symbol, decimals);
+
   for (const address of addresses) {
     if (tokenId !== undefined) {
-      const balance = await publicClient
-        .readContract({
-          abi: erc20Abi,
-          address: contractAddress as `0x${string}`,
-          functionName: 'balanceOf',
-          args: [address as `0x${string}`],
-        })
-        .catch(async () => {
-          return await publicClient.readContract({
-            abi: ERC1155_ABI,
-            address: contractAddress as `0x${string}`,
-            functionName: 'balanceOf',
-            args: [address as `0x${string}`, BigInt(tokenId)],
-          });
-        });
+      const balance = await publicClient.readContract({
+        abi: ERC1155_ABI,
+        address: contractAddress as `0x${string}`,
+        functionName: 'balanceOf',
+        args: [address as `0x${string}`, BigInt(tokenId)],
+      });
 
       total += BigInt(balance);
     } else {

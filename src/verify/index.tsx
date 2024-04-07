@@ -123,7 +123,7 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
     const qs = queryString.stringify(
       {
         actionType: 'post',
-        name: `Check $${tokenSymbol}`,
+        name: `Check $${tokenSymbol}${tokenId ? `#${tokenId}` : ''}`,
         icon: 'search',
         postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}${tokenId ? `/${tokenId}` : ''}`,
       },
