@@ -16,7 +16,7 @@
     "frog": "0.8.0",
     "hono": "^4",
     "lodash-es": "^4.17.21",
-    "mint.club-v2-sdk": "^0.0.96",
+    "mint.club-v2-sdk": "^0.0.97",
     "pinata-fdk": "^3.6.1",
     "query-string": "^9.0.0",
     "sharp": "^0.33.3",
