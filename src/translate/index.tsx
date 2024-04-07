@@ -21,6 +21,7 @@ app.hono.get('/frame', async (c) => {
 app.hono.post('/cast', async (c) => {
   try {
     const body = await c.req.json();
+    console.log({ body });
 
     if (!body?.trustedData?.messageBytes) {
       return c.json({
