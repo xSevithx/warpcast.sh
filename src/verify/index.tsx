@@ -184,6 +184,9 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
     return c.res({
       image: HandledErrorComponent({ error }),
       intents: [<Button action="/customize">Back</Button>],
+      headers: {
+        'cache-control': 'no-store, max-age=0',
+      },
     });
   }
 });
