@@ -156,9 +156,9 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
           <div tw="mt-5 flex items-center">
             on {name} chain{' '}
             {icon ? (
-              <img tw="ml-2" src={icon} width={50} heigh={50} />
+              <img tw="ml-2" src={icon} width={50} height={50} />
             ) : (
-              <div />
+              <div tw="flex h-0 w-0" />
             )}
           </div>
           <div tw="mt-20 flex items-center text-center text-4xl text-gray-500">
