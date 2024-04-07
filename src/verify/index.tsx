@@ -109,7 +109,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
     const qs = queryString.stringify({
       actionType: 'post',
       name: `Check $${tokenSymbol}`,
-      icon: 'check',
+      icon: 'search',
       postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}`,
     });
     const addActionLink = `https://warpcast.com/~/add-cast-action?${qs}`;
