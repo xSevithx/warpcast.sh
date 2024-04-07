@@ -128,6 +128,9 @@ app.frame('/', async (c) => {
       </div>
     ),
     intents: [
+      <Button.Link href={`https://warpcast.com/undefined`}>
+        @undefined
+      </Button.Link>,
       <Button.Link href={addActionLink}>Add translate action</Button.Link>,
     ],
   });
