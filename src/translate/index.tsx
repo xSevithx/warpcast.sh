@@ -132,7 +132,3 @@ app.frame('/', async (c) => {
     ],
   });
 });
-
-app.hono.get('/', async (c) => {
-  return c.html('Hello, World!');
-});
