@@ -46,7 +46,7 @@ async function init() {
   console.log(resp);
 }
 // only need to run this once, to create a signer and register the signed key
+// after you confirm the url given in the console
 // save the signer uuid and public key in .env
-// after you confirm the url given in the console,
-// save the signer uuid and public key in .env
+// no need to do it again until you want to create a new signer
 // init();
