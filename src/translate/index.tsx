@@ -110,11 +110,11 @@ app.frame('/', async (c) => {
     title: 'Warpcast.sh',
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center bg-black text-white">
-        <div tw="mt-5 text-7xl">Add Translate Action</div>
-        <div tw="mt-2 text-4xl text-gray-500">
+        <div tw="mt-5 text-8xl">Add Translate Action</div>
+        <div tw="mt-10 text-6xl text-gray-500">
           Translate any cast to english
         </div>
-        <div tw="mt-10 flex text-3xl">
+        <div tw="mt-20 flex text-5xl">
           Made with ❤️ by{' '}
           <span
             tw="ml-1"
