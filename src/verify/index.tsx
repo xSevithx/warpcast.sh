@@ -13,6 +13,7 @@ import { HandledErrorComponent } from '../components/error';
 import { colors } from '../constants/colors';
 import { ValidationError } from '../constants/types';
 import { getBalance, getTokenInfo, isERC721 } from './verify-utils';
+import { truncateString } from '../../utils/strings';
 
 export const app = new Frog<{
   State: {
@@ -129,7 +130,10 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
     const qs = queryString.stringify(
       {
         actionType: 'post',
-        name: `Check $${tokenSymbol}${tokenId ? `#${tokenId}` : ''}`,
+        name: truncateString(
+          `Check $${tokenSymbol}${tokenId ? `#${tokenId}` : ''}`,
+          30,
+        ),
         icon: 'search',
         postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}${tokenId ? `/${tokenId}` : ''}`,
       },
