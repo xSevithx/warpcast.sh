@@ -1,13 +1,13 @@
 {
   "apps": [
     {
-      "name": "frameboy",
+      "name": "warpcast.sh",
       "script": "src/index.tsx",
       "exec_mode": "fork",
       "node_args": "",
       "merge_logs": true,
       "interpreter": "/home/ubuntu/.bun/bin/bun",
-      "cwd": "/srv/web/frameboy.xyz",
+      "cwd": "/srv/web/warpcast.sh",
       "env": {
         "NODE_ENV": "production"
       }

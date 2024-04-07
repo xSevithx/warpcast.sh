@@ -1,12 +1,13 @@
 /** @jsxImportSource frog/jsx */
+import { readFile } from 'fs/promises';
 import dotenv from 'dotenv';
-dotenv.config();
-
 import { Frog } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
+import { app as verify } from './api/verify';
+dotenv.config();
 
 declare global {
   var cloudflared: string | undefined;
@@ -26,15 +27,14 @@ const origin =
 
 console.log({ origin });
 
-const app = new Frog({
+export const app = new Frog({
   assetsPath: '/',
   basePath: '/',
   origin,
-  imageAspectRatio: '1:1',
   imageOptions: {
     fonts: [
       {
-        name: 'Noto Sans',
+        name: 'Bebas Neue',
         source: 'google',
       },
     ],
@@ -48,6 +48,8 @@ app.use(async (c, next) => {
   await next();
 });
 
+app.route('/verify', verify);
+
 app.use('/*', serveStatic({ root: './public' }));
 devtools(app, { serveStatic });
 
@@ -59,5 +61,3 @@ if (typeof Bun !== 'undefined') {
   });
   console.log(`Server is running on port ${port}`);
 }
-
-// app.hono.route("/stream", streamer);
