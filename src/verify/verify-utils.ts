@@ -30,19 +30,26 @@ export async function getTokenInfo(params: {
     })
     .catch(() => 0);
 
-  let tokenSymbol = await publicClient.readContract({
-    abi: erc20Abi,
-    address: contractAddress as `0x${string}`,
-    functionName: 'symbol',
-  });
-
-  if (!tokenSymbol) {
-    tokenSymbol = await publicClient.readContract({
-      abi: ERC1155_ABI,
+  let tokenSymbol = await publicClient
+    .readContract({
+      abi: erc20Abi,
       address: contractAddress as `0x${string}`,
-      functionName: 'name',
+      functionName: 'symbol',
+    })
+    .catch(async () => {
+      const name = await publicClient.readContract({
+        abi: ERC1155_ABI,
+        address: contractAddress as `0x${string}`,
+        functionName: 'name',
+      });
+
+      // make acronym
+      return name
+        .split(' ')
+        .map((word) => word[0])
+        .join('')
+        .toUpperCase();
     });
-  }
 
   return { decimals, tokenSymbol };
 }
@@ -89,7 +96,8 @@ export async function getBalance(params: {
       return name
         .split(' ')
         .map((word) => word[0])
-        .join('');
+        .join('')
+        .toUpperCase();
     });
 
   for (const address of addresses) {
