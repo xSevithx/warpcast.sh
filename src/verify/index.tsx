@@ -65,17 +65,19 @@ app.frame('/customize', async (c) => {
   });
 });
 
-app.frame('/create/:chainId/:contractAddress', async (c) => {
+app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
   const { inputText } = c;
   const split = inputText?.split(',') || [];
   let chainId = c.req.param('chainId');
   let address = c.req.param('contractAddress');
-  const tokenId = split[2]?.trim();
+  let tokenId = c.req.param('tokenId');
 
   if (chainId === '-1' && address === '-1' && !!inputText) {
     chainId = split[0]?.trim();
     address = split[1]?.trim();
+    tokenId = split[2]?.trim();
   }
+
   Logger.info(chainId + '/' + address);
 
   try {
@@ -87,7 +89,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       address,
     );
 
-    if (!isAddress(address)) {
+    if (!isAddress(contractAddress)) {
       throw new ValidationError('Invalid token address');
     }
 
