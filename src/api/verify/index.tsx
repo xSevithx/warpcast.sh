@@ -66,6 +66,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
   const split = inputText?.split(',') || [];
   let chainId = c.req.param('chainId');
   let address = c.req.param('contractAddress');
+  console.log('here', chainId, address, inputText, split);
 
   if ((chainId === '-1' || address === '-1') && inputText) {
     chainId = split[0]?.trim();
