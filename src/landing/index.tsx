@@ -32,7 +32,7 @@ app.frame('/', async (c) => {
   return c.res({
     title: 'Warpcast.sh',
     image: (
-      <div tw="flex h-full w-full flex-col items-center justify-center text-white">
+      <div tw="flex h-full w-full flex-col items-center justify-center bg-black text-white">
         <div tw="text-5xl">Warpcast.sh</div>
         <div tw="mt-5 flex text-3xl">
           Made with ❤️ by{' '}
@@ -67,7 +67,7 @@ app.frame('/actions', async (c) => {
   return c.res({
     title: 'Warpcast.sh',
     image: (
-      <div tw="flex h-full w-full flex-col items-center justify-center text-3xl text-white">
+      <div tw="flex h-full w-full flex-col items-center justify-center bg-black text-3xl text-white">
         <div tw="text-5xl">Actions</div>
         <div
           tw="mt-10 flex flex-col"
@@ -113,7 +113,7 @@ app.frame('/frames', async (c) => {
   return c.res({
     title: 'Warpcast.sh',
     image: (
-      <div tw="flex h-full w-full flex-col items-center justify-center text-3xl text-white">
+      <div tw="flex h-full w-full flex-col items-center justify-center bg-black text-3xl text-white">
         <div tw="text-5xl">Actions</div>
         <div
           tw="mt-10 flex flex-col"
