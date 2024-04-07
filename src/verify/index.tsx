@@ -144,6 +144,13 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
     );
     const addActionLink = `https://warpcast.com/~/add-cast-action?${qs}`;
 
+    const shareQs = queryString.stringify({
+      text: `${tokenSymbol} balance check on ${name} chain`,
+      'embeds[]': `https://warpcast.sh/verify/create/${chainId}/${contractAddress}${tokenId ? `/${tokenId}` : ''}`,
+    });
+
+    const warpcastRedirectLink = `https://warpcast.com/~/compose?${shareQs}`;
+
     return c.res({
       title: 'Warpcast.sh',
       image: (
@@ -181,6 +188,7 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
       ),
       intents: [
         <Button action="/customize">Customize</Button>,
+        <Button.Link href={warpcastRedirectLink}>Share</Button.Link>,
         <Button.Link href={addActionLink}>Add action</Button.Link>,
       ],
     });
