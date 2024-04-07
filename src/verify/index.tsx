@@ -99,7 +99,13 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
       throw new ValidationError('Invalid chain id');
     }
 
-    const { name, icon, color } = CHAIN_MAP[chain.id as SdkSupportedChainIds];
+    const { name, icon, color } = CHAIN_MAP[
+      chain.id as SdkSupportedChainIds
+    ] || {
+      name: chain.name,
+      icon: null,
+      color: colors.warpcast,
+    };
     const { tokenSymbol, decimals } = await getTokenInfo({
       chainId: Number(chainId),
       contractAddress,
@@ -148,7 +154,12 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
             ${tokenSymbol}
           </div>
           <div tw="mt-5 flex items-center">
-            on {name} chain <img tw="ml-2" src={icon} width={50} heigh={50} />
+            on {name} chain{' '}
+            {icon ? (
+              <img tw="ml-2" src={icon} width={50} heigh={50} />
+            ) : (
+              <div />
+            )}
           </div>
           <div tw="mt-20 flex items-center text-center text-4xl text-gray-500">
             created by{' '}
