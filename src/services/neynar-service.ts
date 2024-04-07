@@ -17,14 +17,26 @@ export async function cast(text: string, url: string, parentHash: string) {
     replyTo: parentHash,
   });
 
-  await client.publishCast(FARCASTER_UUID, text, {
-    embeds: [
-      {
-        url,
-      },
-    ],
-    replyTo: parentHash,
-  });
+  let lastHash = parentHash;
+
+  const MAX_CHUNK_SIZE = 320;
+  const chunks = [];
+
+  for (let i = 0; i < text.length; i += MAX_CHUNK_SIZE) {
+    chunks.push(text.substring(i, i + MAX_CHUNK_SIZE));
+  }
+
+  for (const chunk of chunks) {
+    const { hash } = await client.publishCast(FARCASTER_UUID, chunk, {
+      embeds: [
+        {
+          url,
+        },
+      ],
+      replyTo: lastHash,
+    });
+    lastHash = hash;
+  }
 }
 
 async function init() {

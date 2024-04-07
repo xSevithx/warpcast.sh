@@ -79,10 +79,7 @@ app.hono.post('/cast', async (c) => {
 
     await cast(
       // `@${clickedUsername} mfered @${castorUsername} 0-'`,
-      truncateString(
-        `@${clickedUsername} here is the translation:\n\n${translation}`,
-        300,
-      ),
+      `@${clickedUsername} here is the translation:\n\n${translation}`,
       embed,
       hash,
     );
