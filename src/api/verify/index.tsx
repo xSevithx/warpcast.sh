@@ -108,7 +108,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
 
     const qs = queryString.stringify({
       actionType: 'post',
-      name: `Check ${tokenSymbol}`,
+      name: `Check $${tokenSymbol}`,
       icon: 'shield-check',
       postUrl: `${getOrigin()}/verify/check/${chainId}/${contractAddress}`,
     });
