@@ -24,10 +24,10 @@ export async function translate(text: string) {
     });
 
     console.log(completion.choices[0].message.content);
-
     const translated = JSON.parse(
       completion.choices[0].message.content as any,
     )?.translated;
+    console.log(translated);
 
     if (!translated) {
       throw new Error('Failed to translate');
@@ -41,5 +41,17 @@ export async function translate(text: string) {
 }
 
 // translate(`
-// こちらのFramesにgithubのプロフィールURLを入力するだけでPicnicPlan（$20/mo）が50%OFFになるPromoCodeが貰えます。
+// 【DEGENのやり方解説🔰】
+
+// ✅条件
+
+// ①3回以上投稿している
+// ②登録から48時間以上経過している
+// ③10,000 $DEGEN以上保有している
+
+// ✅投げ方
+
+// チップを投げるには、投稿の下に「金額 $DEGEN」とリプ📝
+
+// 多くの方に知ってもらえると嬉しいです😊
 // `);
