@@ -161,10 +161,11 @@ app.hono.get('/check/:chainId/:contractAddress', async (c) => {
   const body = await c.req.json();
 
   if (!body?.trustedData?.messageBytes) {
-    return c.json({
+    c.json({
       status: 400,
       message: 'Invalid Frame Action',
     });
+    return;
   }
 
   const {
@@ -189,7 +190,7 @@ app.hono.get('/check/:chainId/:contractAddress', async (c) => {
     contractAddress: c.req.param('contractAddress'),
   });
 
-  return c.json({
+  c.json({
     status: 200,
     message: `@${username} - ${balance} ${symbol}`,
   });
