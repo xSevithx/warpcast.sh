@@ -37,10 +37,10 @@ app.frame('/customize', async (c) => {
     title: 'Warpcast.sh',
     action: '/create/-1/-1',
     image: (
-      <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-10 text-5xl text-white">
+      <div tw="flex h-full w-full flex-col items-center justify-center bg-black p-5 text-5xl text-white">
         <div tw="flex text-7xl">Enter token information</div>
         <div
-          tw="mt-20 flex items-center text-center"
+          tw="mt-20 flex items-center text-center text-4xl"
           style={{
             color: colors.warpcast,
           }}
