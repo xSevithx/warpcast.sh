@@ -23,7 +23,7 @@ const origin =
     ? globalThis.cloudflared
     : process.env.NODE_ENV !== 'production'
       ? `http://localhost:${process.env.PORT}`
-      : 'https://frameboy.xyz';
+      : 'https://warpcast.sh';
 
 console.log({ origin });
 
