@@ -171,7 +171,7 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
             >
               @undefined
             </span>{' '}
-            to make warpcast a better place
+            with ❤️ for warpcast
           </div>
         </div>
       ),
