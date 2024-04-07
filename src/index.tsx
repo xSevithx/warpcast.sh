@@ -1,12 +1,13 @@
 /** @jsxImportSource frog/jsx */
-import { readFile } from 'fs/promises';
 import dotenv from 'dotenv';
-import { Frog } from 'frog';
+import { Button, Frog } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
 import { app as verify } from './verify';
+import { app as translate } from './translate';
+import { app as landing } from './landing';
 import { getOrigin } from '../utils/url';
 dotenv.config();
 
@@ -26,20 +27,6 @@ export const app = new Frog({
   assetsPath: '/',
   basePath: '/',
   origin,
-  imageOptions: {
-    fonts: [
-      {
-        name: 'Bebas Neue',
-        source: 'google',
-      },
-      {
-        name: 'Roboto',
-        source: 'google',
-      },
-    ],
-  },
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
 
 app.use(async (c, next) => {
@@ -47,7 +34,9 @@ app.use(async (c, next) => {
   await next();
 });
 
+app.route('/', landing);
 app.route('/verify', verify);
+app.route('/translate', translate);
 
 app.use('/*', serveStatic({ root: './public' }));
 devtools(app, { serveStatic });
