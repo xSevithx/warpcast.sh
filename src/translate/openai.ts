@@ -12,11 +12,11 @@ export async function translate(text: string) {
         {
           role: 'system',
           content:
-            'You are an expert translator that can translate any language to english',
+            'You are an expert translator that can translate any language to english. 1. you MUST return a JSON object with a single "translated" key with value. value MUST BE string. You should ONLY return an object that looks like {"translated": "[output value]} and NOTHING ELSE.',
         },
         {
           role: 'user',
-          content: `What did this person say? 1. you MUST return a JSON object with a single "translated" key. 2. the value MUST BE string.\n\ntext: ${text}`,
+          content: `What did this person say? \n\ntext: ${text}`,
         },
       ],
       model: 'gpt-3.5-turbo',
