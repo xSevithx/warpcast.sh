@@ -3,4 +3,4 @@ bun install
 bun run dev
 ```
 
-Head to http://localhost:5173
+Head to http://localhost:5173/dev
