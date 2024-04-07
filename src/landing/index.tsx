@@ -95,8 +95,7 @@ app.frame('/actions', async (c) => {
             >
               translate
             </div>
-            <div tw="text-2xl">Translate casts</div>
-            <div tw="flex text-base text-gray-500">coming soon</div>
+            <div tw="text-2xl">Translate casts to english</div>
           </div>
         </div>
       </div>
@@ -105,6 +104,7 @@ app.frame('/actions', async (c) => {
     intents: [
       <Button action="/">Back</Button>,
       <Button action="/verify/customize">Verify</Button>,
+      <Button action="/translate">Translate</Button>,
     ],
   });
 });
