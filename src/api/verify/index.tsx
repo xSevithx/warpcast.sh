@@ -11,6 +11,7 @@ import { ValidationError } from '../../constants/types';
 import { getBalance, getTokenSymbol } from './verify-utils';
 import { isAddress } from 'viem';
 import { getOrigin } from '../../../utils/url';
+import { Logger } from '../../../utils/Logger';
 
 export const app = new Frog<{
   State: {
@@ -68,12 +69,12 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
   const split = inputText?.split(',') || [];
   let chainId = c.req.param('chainId');
   let address = c.req.param('contractAddress');
-  console.log('here', chainId, address, inputText, split);
 
-  if ((chainId === '-1' || address === '-1') && inputText) {
+  if (chainId === '-1' && address === '-1' && !!inputText) {
     chainId = split[0]?.trim();
     address = split[1]?.trim();
   }
+  Logger.info(chainId + '/' + address);
 
   try {
     const contractAddress = parse(
@@ -84,7 +85,7 @@ app.frame('/create/:chainId/:contractAddress', async (c) => {
       address,
     );
 
-    if (!isAddress(address) === false) {
+    if (!isAddress(address)) {
       throw new ValidationError('Invalid token address');
     }
 
