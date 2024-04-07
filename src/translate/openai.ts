@@ -30,7 +30,6 @@ export async function translate(text: string) {
       throw new Error('Failed to translate');
     }
 
-    console.log(translated);
     return translated;
   } catch (e: any) {
     Logger.error(e);
