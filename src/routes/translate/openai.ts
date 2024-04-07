@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
-import { OPENAI_API_KEY } from '../../env/server-env';
-import { Logger } from '../../utils/Logger';
+import { OPENAI_API_KEY } from '../../../env/server-env';
+import { Logger } from '../../../utils/Logger';
 const openai = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });

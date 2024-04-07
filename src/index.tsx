@@ -1,15 +1,15 @@
 /** @jsxImportSource frog/jsx */
 import dotenv from 'dotenv';
-import { Button, Frog } from 'frog';
+import { Frog } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
+import { SECRET } from '../env/server-env';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
-import { app as verify } from './verify';
-import { app as translate } from './translate';
-import { app as landing } from './landing';
 import { getOrigin } from '../utils/url';
-import { SECRET } from '../env/server-env';
+import { app as landing } from './routes/landing';
+import { app as translate } from './routes/translate';
+import { app as verify } from './routes/verify';
 dotenv.config();
 
 declare global {

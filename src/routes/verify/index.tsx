@@ -5,15 +5,15 @@ import { CHAIN_MAP, SdkSupportedChainIds } from 'mint.club-v2-sdk';
 import queryString from 'query-string';
 import { length, parse, startsWith, string } from 'valibot';
 import { isAddress } from 'viem';
-import { NEYNAR_API_KEY } from '../../env/server-env';
-import { Logger } from '../../utils/Logger';
-import { getViemChain } from '../../utils/chain';
-import { getOrigin } from '../../utils/url';
-import { HandledErrorComponent } from '../components/error';
-import { colors } from '../constants/colors';
-import { ValidationError } from '../constants/types';
+import { NEYNAR_API_KEY } from '../../../env/server-env';
+import { Logger } from '../../../utils/Logger';
+import { getViemChain } from '../../../utils/chain';
+import { getOrigin } from '../../../utils/url';
+import { HandledErrorComponent } from '../../components/error';
+import { colors } from '../../constants/colors';
+import { ValidationError } from '../../constants/types';
 import { getBalance, getTokenInfo, isERC721 } from './verify-utils';
-import { truncateString } from '../../utils/strings';
+import { truncateString } from '../../../utils/strings';
 
 export const app = new Frog<{
   State: {

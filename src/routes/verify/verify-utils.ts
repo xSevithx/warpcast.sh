@@ -5,7 +5,7 @@ import {
   toNumber,
 } from 'mint.club-v2-sdk';
 import { createPublicClient, erc20Abi, erc721Abi, http } from 'viem';
-import { getViemChain } from '../../utils/chain';
+import { getViemChain } from '../../../utils/chain';
 
 export async function getTokenInfo(params: {
   chainId: number;

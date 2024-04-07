@@ -1,7 +1,7 @@
 /** @jsxImportSource frog/jsx */
 import { Frog, Button } from 'frog';
-import { Logger } from '../../utils/Logger';
-import { colors } from '../constants/colors';
+import { Logger } from '../../../utils/Logger';
+import { colors } from '../../constants/colors';
 
 export const app = new Frog({
   imageAspectRatio: '1:1',

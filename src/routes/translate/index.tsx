@@ -1,15 +1,15 @@
 /** @jsxImportSource frog/jsx */
 import { Button, Frog, getFrameMetadata } from 'frog';
-import { colors } from '../constants/colors';
+import { colors } from '../../constants/colors';
 import queryString from 'query-string';
-import { getOrigin } from '../../utils/url';
+import { getOrigin } from '../../../utils/url';
 import ky from 'ky';
 import { NeynarAPIClient } from '@neynar/nodejs-sdk';
-import { NEYNAR_API_KEY } from '../../env/server-env';
-import { Logger } from '../../utils/Logger';
-import { cast } from '../services/neynar-service';
+import { NEYNAR_API_KEY } from '../../../env/server-env';
+import { Logger } from '../../../utils/Logger';
+import { cast } from '../../services/neynar-service';
 import { translate } from './openai';
-import { truncateString } from '../../utils/strings';
+import { truncateString } from '../../../utils/strings';
 
 const client = new NeynarAPIClient(NEYNAR_API_KEY);
 export const app = new Frog();
