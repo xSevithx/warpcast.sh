@@ -16,7 +16,7 @@ export async function translate(text: string) {
         },
         {
           role: 'user',
-          content: `What did this person say? return a JSON object with a single "translated" key.\n\ntext: ${text}`,
+          content: `What did this person say? you MUST return a JSON object with a single "translated" key.\n\ntext: ${text}`,
         },
       ],
       model: 'gpt-3.5-turbo',
