@@ -83,7 +83,7 @@ app.frame('/create/:chainId/:contractAddress/:tokenId?', async (c) => {
 
   try {
     const contractAddress = parse(
-      string([
+      string('You need to provide a value', [
         length(42, 'Token address should be 42 characters long'),
         startsWith('0x', 'Token address should start with 0x'),
       ]),
